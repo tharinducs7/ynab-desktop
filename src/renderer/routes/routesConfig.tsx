@@ -21,7 +21,7 @@ export const publicRoutes: RouteConfig[] = [
 ];
 
 // Private routes: user must be authenticated.
-// Here we wrap our protected routes under a common layout (e.g. sidebar, header, etc.).
+// This nests the Dashboard route under the PrivateLayout.
 export const privateRoutes: RouteConfig[] = [
   {
     path: '/',
@@ -29,7 +29,8 @@ export const privateRoutes: RouteConfig[] = [
     auth: true,
     children: [
       { path: '', element: <Dashboard /> },
-      // More modules can be added here...
+      { path: 'home/dashboard', element: <Dashboard /> },
+      // ... add other private module routes here.
     ],
   },
 ];

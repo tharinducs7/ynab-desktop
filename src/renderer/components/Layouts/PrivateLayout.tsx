@@ -1,19 +1,26 @@
-// renderer/components/Layout/PrivateLayout.tsx
 import React from 'react';
-import { Layout, Menu, Popover, Dropdown, Avatar } from 'antd';
+import { Layout, Popover, Dropdown, Avatar, Menu, Button, Flex } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { BellOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  BellOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { useAuth } from '../../contexts/AuthContext';
+import ERP_LOGO from '../../../../assets/logo-h.png';
+import ERP_ICON_LOGO from '../../../../assets/icon.png';
 import SideMenu from './SideMenu';
+import { useAppContext } from '../../contexts/AppContext';
 
 const { Header, Sider, Content } = Layout;
 
 const PrivateLayout: React.FC = () => {
   const navigate = useNavigate();
   const { authData, logout } = useAuth();
-  // Get user details from authData; fallback if not available
+  const { sidebarCollapsed, toggleSidebar, selectedMenuItem } = useAppContext();
   const userName = authData?.user?.name || 'Admin';
-  // User dropdown menu actions
+  // Define user menu actions.
   const handleUserMenuClick = (e: any) => {
     if (e.key === 'logout') {
       logout();
@@ -34,12 +41,12 @@ const PrivateLayout: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {/* Updated header with left logo and right user info */}
+      {/* Header with logo and user actions */}
       <Header
         style={{
           background: '#fff',
           borderBottom: '1px solid #f0f0f0',
-          padding: '0 24px',
+          padding: '0 14px',
         }}
       >
         <div
@@ -50,20 +57,54 @@ const PrivateLayout: React.FC = () => {
             height: '64px',
           }}
         >
-          {/* Left: Logo and application title */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img
-              src="https://zfcthk.com/wp-content/uploads/2022/07/dummy-logo-4b.png"
-              alt="Logo"
-              style={{ height: 90, marginRight: 12 }}
-            />
-            <span
-              style={{ fontSize: 20, fontWeight: 'bold', color: '#001529' }}
+            <Flex
+              style={{
+                minWidth: sidebarCollapsed ? 80 : 290, // Ensure container is at least 260px wide
+                display: 'flex', // Make sure it acts as a flex container
+                justifyContent: 'space-between', // Push img and button to opposite ends
+                alignItems: 'center', // Vertically center the inner elements
+              }}
             >
-              ERP Dashboard
-            </span>
+              <img
+                src={sidebarCollapsed ? ERP_ICON_LOGO : ERP_LOGO}
+                alt="Logo"
+                style={{
+                  width: sidebarCollapsed ? 40 : 160,
+                  height: sidebarCollapsed ? 40 : 'auto',
+                  marginRight: sidebarCollapsed ? 6 : 0, // Optional spacing when not collapsed
+                  transition: 'width 0.3s, height 0.3s', // Smooth transition for size change
+                  marginLeft: sidebarCollapsed ? 0 : 0, // Optional spacing when not collapsed
+                  // Remove marginRight since space-between distributes the items
+                }}
+              />
+              <Button
+                color="default"
+                variant="outlined"
+                onClick={toggleSidebar}
+              >
+                {sidebarCollapsed ? (
+                  <MenuUnfoldOutlined />
+                ) : (
+                  <MenuFoldOutlined />
+                )}
+              </Button>
+            </Flex>
+            <Flex
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginLeft: 16, // Optional spacing between the two flex items
+              }}
+            >
+              <span
+                style={{ fontSize: 20, fontWeight: 'bold', color: '#001529' }}
+              >
+                {selectedMenuItem?.label || 'Dashboard'}
+              </span>
+            </Flex>
           </div>
-          {/* Right: Notifications and user dropdown */}
+
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Popover content="No new notifications" placement="bottomRight">
               <BellOutlined
@@ -95,9 +136,12 @@ const PrivateLayout: React.FC = () => {
           </div>
         </div>
       </Header>
-      {/* Sidebar and Content */}
+      {/* Sidebar and content area */}
       <Layout>
-        <Sider width={300} style={{ background: '#fff' }}>
+        <Sider
+          width={sidebarCollapsed ? 60 : 260}
+          style={{ background: '#fff' }}
+        >
           <SideMenu />
         </Sider>
         <Layout style={{ padding: '24px' }}>
@@ -109,6 +153,7 @@ const PrivateLayout: React.FC = () => {
               minHeight: 280,
             }}
           >
+            {/* Nested content will render here */}
             <Outlet />
           </Content>
         </Layout>

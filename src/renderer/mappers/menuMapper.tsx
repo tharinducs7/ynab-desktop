@@ -1,6 +1,6 @@
 import React from 'react';
 import type { MenuProps } from 'antd';
-
+import { HomeOutlined } from '@ant-design/icons';
 // Define interfaces representing your permissions structure.
 export interface AuthModule {
   parent_menu: {
@@ -53,7 +53,7 @@ export const mapPermissionsToMenuItems = (
         // Use the submenu's URL as the key and redirect target.
         key: onlySub.sub_menu_url || `menu_parent_${parent.id}`,
         label: parent.name,
-        icon: parent.icon ? <i className={parent.icon} /> : null,
+        icon: parent.icon ? <HomeOutlined /> : null,
         // No children: this will be rendered as a single clickable item.
       } as MenuItem;
     }
@@ -68,15 +68,13 @@ export const mapPermissionsToMenuItems = (
                 ? sub.children.map((child) => ({
                     key: child.url || `menu_child_${child.id}`,
                     label: child.name,
-                    icon: child.icon ? <i className={child.icon} /> : null,
+                    icon: child.icon ? <HomeOutlined /> : null,
                   }))
                 : undefined;
             return {
               key: subKey,
               label: sub.sub_menu_name,
-              icon: sub.sub_menu_icon ? (
-                <i className={sub.sub_menu_icon} />
-              ) : null,
+              icon: sub.sub_menu_icon ? <HomeOutlined /> : null,
               children: grandChildren,
             } as MenuItem;
           })
@@ -86,7 +84,7 @@ export const mapPermissionsToMenuItems = (
     return {
       key: parent.url || `menu_parent_${parent.id}`,
       label: parent.name,
-      icon: parent.icon ? <i className={parent.icon} /> : null,
+      icon: parent.icon ? <HomeOutlined /> : null,
       children: childrenItems,
     } as MenuItem;
   });
