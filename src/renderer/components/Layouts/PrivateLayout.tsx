@@ -6,7 +6,10 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
+  SettingOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
+
 import { useAuth } from '../../contexts/AuthContext';
 import ERP_LOGO from '../../../../assets/logo-h.png';
 import ERP_ICON_LOGO from '../../../../assets/icon.png';
@@ -19,11 +22,12 @@ const PrivateLayout: React.FC = () => {
   const navigate = useNavigate();
   const { authData, logout } = useAuth();
   const { sidebarCollapsed, toggleSidebar, selectedMenuItem } = useAppContext();
-  const userName = authData?.user?.name || 'Admin';
+  const userName = authData?.user?.name;
   // Define user menu actions.
   const handleUserMenuClick = (e: any) => {
     if (e.key === 'logout') {
       logout();
+      navigate('/login');
     } else if (e.key === 'account') {
       navigate('/account');
     } else if (e.key === 'settings') {
@@ -33,14 +37,20 @@ const PrivateLayout: React.FC = () => {
 
   const userMenu = (
     <Menu onClick={handleUserMenuClick}>
-      <Menu.Item key="account">My Account</Menu.Item>
-      <Menu.Item key="settings">Settings</Menu.Item>
-      <Menu.Item key="logout">Logout</Menu.Item>
+      <Menu.Item key="account" icon={<UserOutlined />}>
+        My Account
+      </Menu.Item>
+      <Menu.Item key="settings" icon={<SettingOutlined />}>
+        Settings
+      </Menu.Item>
+      <Menu.Item key="logout" icon={<LogoutOutlined />}>
+        Logout
+      </Menu.Item>
     </Menu>
   );
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: '100%' }}>
       {/* Header with logo and user actions */}
       <Header
         style={{
@@ -96,11 +106,12 @@ const PrivateLayout: React.FC = () => {
                 alignItems: 'center',
                 marginLeft: 16, // Optional spacing between the two flex items
               }}
+              className="font-poppins"
             >
               <span
                 style={{ fontSize: 20, fontWeight: 'bold', color: '#001529' }}
               >
-                {selectedMenuItem?.label || 'Dashboard'}
+                {selectedMenuItem?.menu?.label || 'Dashboard'}
               </span>
             </Flex>
           </div>
@@ -150,7 +161,7 @@ const PrivateLayout: React.FC = () => {
               background: '#fff',
               padding: 24,
               margin: 0,
-              minHeight: 280,
+              minHeight: '85vh',
             }}
           >
             {/* Nested content will render here */}

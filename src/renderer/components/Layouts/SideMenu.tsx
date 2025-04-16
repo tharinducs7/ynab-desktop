@@ -82,11 +82,13 @@ const SideMenu: React.FC = () => {
   };
 
   const onClick: MenuProps['onClick'] = (e) => {
-    // Get the full item based on e.key from our mapping.
     const selectedItem = keyToItemMapping[e.key];
-    console.log('Clicked key:', e.key, 'Selected Item:', selectedItem);
-    setSelectedMenuItem(selectedItem || null);
-    // You can now access selectedItem.label or any other property you need.
+    setSelectedMenuItem({
+      info: e,
+      menu: selectedItem || null,
+      permissions: selectedItem?.permissions,
+      menuId: selectedItem?.menuId,
+    });
     navigate(e.key);
   };
 

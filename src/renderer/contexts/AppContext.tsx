@@ -7,14 +7,26 @@ import React, {
 } from 'react';
 import { MenuItem } from '../mappers/menuMapper';
 
+export type DrawerMode =
+  | 'view_mode'
+  | 'edit_mode'
+  | 'create_mode'
+  | 'delete_mode';
+
 interface AppContextProps {
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
+
   theme: 'light' | 'dark';
   setTheme: (theme: 'light' | 'dark') => void;
+
   selectedMenuItem: any | null;
-  setSelectedMenuItem: (item: MenuItem | null) => void;
-  // You can add more app-level states, e.g., language, global modals, etc.
+  setSelectedMenuItem: (item: any | null) => void;
+
+  drawerVisible: boolean;
+  openDrawer: (mode: DrawerMode) => void;
+  closeDrawer: () => void;
+  drawerMode: DrawerMode;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -42,6 +54,18 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
     setSidebarCollapsed((prev) => !prev);
   }, []);
 
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [drawerMode, setDrawerMode] = useState<DrawerMode>('view_mode');
+
+  const openDrawer = useCallback((mode: DrawerMode) => {
+    setDrawerMode(mode);
+    setDrawerVisible(true);
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerVisible(false);
+  }, []);
+
   const value = useMemo(
     () => ({
       sidebarCollapsed,
@@ -50,8 +74,21 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setTheme,
       selectedMenuItem,
       setSelectedMenuItem,
+      drawerVisible,
+      openDrawer,
+      closeDrawer,
+      drawerMode,
     }),
-    [selectedMenuItem, sidebarCollapsed, theme, toggleSidebar],
+    [
+      closeDrawer,
+      drawerMode,
+      drawerVisible,
+      openDrawer,
+      selectedMenuItem,
+      sidebarCollapsed,
+      theme,
+      toggleSidebar,
+    ],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
