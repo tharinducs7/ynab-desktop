@@ -16,7 +16,7 @@ interface UOM {
 
 const UnitOfMeasurement: React.FC = () => {
   const { drawerMode, closeDrawer } = useAppContext();
-
+  const URL: string = '/unit_of_measures';
   // 2) Tell TS these columns are for UOM
   const userColumns: ColumnsType<UOM> = [
     {
@@ -57,7 +57,7 @@ const UnitOfMeasurement: React.FC = () => {
   return (
     <div className="dashboard">
       <DataTable<UOM>
-        apiEndpoint="/unit_of_measures"
+        apiEndpoint={URL}
         columns={userColumns}
         rowKey="id"
         defaultPageSize={20}

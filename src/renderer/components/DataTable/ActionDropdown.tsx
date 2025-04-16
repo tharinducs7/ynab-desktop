@@ -29,7 +29,7 @@ const ActionDropdown = <T extends Record<string, any>>({
   data,
   onAction,
 }: ActionDropdownProps<T>) => {
-  const { selectedMenuItem } = useAppContext();
+  const { selectedMenuItem, openDrawer } = useAppContext();
   const perms = selectedMenuItem?.permissions;
   const menuId = selectedMenuItem?.menuId;
 
@@ -52,7 +52,7 @@ const ActionDropdown = <T extends Record<string, any>>({
     // Standard permission‑based actions
     if (perms.can_view)
       actionItems.push({
-        key: 'view',
+        key: 'view_mode',
         label: 'View Details',
         icon: iconMap.view,
       });
@@ -64,13 +64,13 @@ const ActionDropdown = <T extends Record<string, any>>({
     //   });
     if (perms.can_update)
       actionItems.push({
-        key: 'edit',
+        key: 'edit_mode',
         label: 'Edit',
         icon: iconMap.edit,
       });
     if (perms.can_delete)
       actionItems.push({
-        key: 'delete',
+        key: 'delete_mode',
         label: 'Delete',
         danger: true,
         icon: iconMap.delete,
@@ -105,8 +105,9 @@ const ActionDropdown = <T extends Record<string, any>>({
     return actionItems;
   }, [perms, iconMap.view, iconMap.edit, iconMap.delete]);
 
-  const onMenuClick: MenuProps['onClick'] = ({ key }) => {
+  const onMenuClick: MenuProps['onClick'] = ({ key }: any) => {
     console.log('Action:', key, 'on menuId:', menuId, 'with data:', data);
+    openDrawer(key);
     if (onAction) onAction(key, menuId, data);
   };
 

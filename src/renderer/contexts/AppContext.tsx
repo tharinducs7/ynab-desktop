@@ -27,6 +27,9 @@ interface AppContextProps {
   openDrawer: (mode: DrawerMode) => void;
   closeDrawer: () => void;
   drawerMode: DrawerMode;
+
+  currentData: any | null;
+  setCurrentData: (item: any | null) => void;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -48,6 +51,7 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(
     null,
   );
+  const [currentData, setCurrentData] = useState<any | null>(null);
 
   // Toggle function for sidebar collapsed state
   const toggleSidebar = useCallback(() => {
@@ -78,6 +82,8 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       openDrawer,
       closeDrawer,
       drawerMode,
+      setCurrentData,
+      currentData,
     }),
     [
       closeDrawer,
@@ -88,6 +94,8 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       sidebarCollapsed,
       theme,
       toggleSidebar,
+      setCurrentData,
+      currentData,
     ],
   );
 
