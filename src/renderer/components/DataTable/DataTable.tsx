@@ -95,6 +95,15 @@ const DataTable = <T extends Record<string, any>>({
     });
   };
 
+  const processedColumns = useMemo(
+    () =>
+      columns?.map((col) => ({
+        ...col,
+        showSorterTooltip: false,
+      })),
+    [columns],
+  );
+
   return (
     <Space direction="vertical" style={{ width: '100%' }}>
       <div
@@ -131,7 +140,7 @@ const DataTable = <T extends Record<string, any>>({
         size="small"
         scroll={{ x: 'max-content' }}
         rowKey={rowKey}
-        columns={columns}
+        columns={processedColumns}
         dataSource={data?.data}
         loading={isLoading}
         pagination={{
