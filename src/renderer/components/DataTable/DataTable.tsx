@@ -38,6 +38,11 @@ const DataTable = <T extends Record<string, any>>({
 }: DataTableProps<T>) => {
   const [search, setSearch] = useState('');
   const { selectedMenuItem, openDrawer } = useAppContext();
+  const [sorter] = useState<{
+    field?: string;
+    order?: 'ascend' | 'descend';
+  }>({});
+
   const perms = selectedMenuItem?.permissions;
   // const menuId = selectedMenuItem?.menuId;
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -51,13 +56,30 @@ const DataTable = <T extends Record<string, any>>({
   );
 
   const { data, isLoading } = useQuery<ApiResponse<T>, Error>({
-    queryKey: [apiEndpoint, search, pagination.current, pagination.pageSize],
+    queryKey: [
+      apiEndpoint,
+      search,
+      pagination.current,
+      pagination.pageSize,
+      sorter.field,
+      sorter.order,
+    ],
     queryFn: async () => {
-      const params = {
+      const params: {
+        search: string;
+        page: number;
+        pageSize: number;
+        sortField?: string;
+        sortOrder?: string;
+      } = {
         search,
         page: pagination.current!,
         pageSize: pagination.pageSize!,
       };
+      if (sorter.field && sorter.order) {
+        params.sortField = sorter.field;
+        params.sortOrder = sorter.order === 'ascend' ? 'asc' : 'desc';
+      }
       const response = await apiClient.get(apiEndpoint, {
         params,
       });

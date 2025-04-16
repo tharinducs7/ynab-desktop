@@ -89,6 +89,7 @@ const SideMenu: React.FC = () => {
       permissions: selectedItem?.permissions,
       menuId: selectedItem?.menuId,
     });
+
     navigate(e.key);
   };
 
