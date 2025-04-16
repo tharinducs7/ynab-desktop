@@ -3,7 +3,6 @@ import React, {
   createContext,
   useState,
   useContext,
-  useEffect,
   useCallback,
   useMemo,
 } from 'react';
@@ -54,15 +53,15 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     return storedData ? JSON.parse(storedData) : null;
   });
 
-  useEffect(() => {
-    if (authData) {
-      sessionStorage.setItem('authData', JSON.stringify(authData));
-      sessionStorage.setItem('token', authData.token);
-    } else {
-      sessionStorage.removeItem('authData');
-      sessionStorage.removeItem('token');
-    }
-  }, [authData]);
+  // useEffect(() => {
+  //   if (authData) {
+  //     sessionStorage.setItem('authData', JSON.stringify(authData));
+  //     sessionStorage.setItem('token', authData.token);
+  //   } else {
+  //     sessionStorage.removeItem('authData');
+  //     sessionStorage.removeItem('token');
+  //   }
+  // }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     try {
@@ -73,10 +72,15 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       const { success, data } = response?.data ?? {};
       if (success) {
         message.success(`Welcome ${data.user.name}`);
+        console.log('Login successful');
         setAuthData(data);
+        sessionStorage.setItem('authData', JSON.stringify(data));
+        sessionStorage.setItem('token', data.token);
         // Do not call window.location.href here; let the caller navigate.
       } else {
         message.error(response.response.data?.message || 'Login failed.');
+        sessionStorage.removeItem('authData');
+        sessionStorage.removeItem('token');
       }
     } catch (error) {
       // Log the error using a logging utility or handle it appropriately

@@ -1,4 +1,3 @@
-// renderer/utils/apiClient.ts
 import httpClient from './httpClient';
 
 /**

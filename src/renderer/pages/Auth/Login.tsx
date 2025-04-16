@@ -21,6 +21,8 @@ const LoginPage: React.FC = () => {
     setError(null);
     try {
       await login(values.email, values.password);
+      console.log('Login successful');
+
       navigate('/home/dashboard');
     } catch (err: any) {
       // Extract and display a string message only

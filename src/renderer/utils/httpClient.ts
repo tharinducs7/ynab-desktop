@@ -14,6 +14,8 @@ const httpClient = axios.create({
 httpClient.interceptors.request.use(
   (config: any) => {
     const token = sessionStorage.getItem('token');
+    console.log(token, 'token');
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -29,7 +31,7 @@ httpClient.interceptors.response.use(
   (response: any) => response,
   (error: any) => {
     if (error.response && error.response.status === 401) {
-      console.log(error, 'error');
+      console.log(window.location.pathname, 'window.location.pathname');
 
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('authData');
