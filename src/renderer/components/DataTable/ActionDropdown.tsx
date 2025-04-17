@@ -14,6 +14,7 @@ import {
   // CheckOutlined,
 } from '@ant-design/icons';
 import { useAppContext } from '../../contexts/AppContext';
+import apiClient from '../../utils/apiClient';
 
 export interface ActionDropdownProps<T> {
   /** The row or context object you want actions to operate on */
@@ -22,14 +23,16 @@ export interface ActionDropdownProps<T> {
    * Optional callback fired when an action is clicked.
    * Receives (actionKey, menuId, data).
    */
+  apiEndpoint: string;
   onAction?: (actionKey: string, menuId?: number, data?: T) => void;
 }
 
 const ActionDropdown = <T extends Record<string, any>>({
   data,
+  apiEndpoint,
   onAction,
 }: ActionDropdownProps<T>) => {
-  const { selectedMenuItem, openDrawer } = useAppContext();
+  const { selectedMenuItem, openDrawer, setDrawerData } = useAppContext();
   const perms = selectedMenuItem?.permissions;
   const menuId = selectedMenuItem?.menuId;
 
@@ -105,9 +108,23 @@ const ActionDropdown = <T extends Record<string, any>>({
     return actionItems;
   }, [perms, iconMap.view, iconMap.edit, iconMap.delete]);
 
-  const onMenuClick: MenuProps['onClick'] = ({ key }: any) => {
-    console.log('Action:', key, 'on menuId:', menuId, 'with data:', data);
-    openDrawer(key);
+  const onMenuClick: MenuProps['onClick'] = async ({ key }) => {
+    // If creating, no need to fetch details
+    if (key === 'create_mode') {
+      setDrawerData(null);
+      openDrawer(key as any);
+    } else {
+      // fetch detail from `${apiEndpoint}/${data.id}`
+      try {
+        const resp = await apiClient.get(`${apiEndpoint}/${(data as any).id}`);
+        setDrawerData(resp.data.data);
+      } catch (err) {
+        console.error('Failed to fetch detail', err);
+        setDrawerData(null);
+      }
+      openDrawer(key as any);
+    }
+
     if (onAction) onAction(key, menuId, data);
   };
 

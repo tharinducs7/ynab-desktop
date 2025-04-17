@@ -1,21 +1,19 @@
 // src/pages/UnitOfMeasurement.tsx
 import React from 'react';
-import { Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
-import { useAppContext } from '../../../contexts/AppContext';
-import AppDrawer from '../../../components/AppDrawer/AppDrawer';
+import UnitOfMeasureDrawer from './UnitOfMeasureDrawer';
 
 // 1) Define your row type
 interface UOM {
   id: string; // comes from API as string
   name: string;
+  description: string;
   // ...other fields if needed
 }
 
 const UnitOfMeasurement: React.FC = () => {
-  const { drawerMode, closeDrawer } = useAppContext();
   const URL: string = '/unit_of_measures';
   // 2) Tell TS these columns are for UOM
   const userColumns: ColumnsType<UOM> = [
@@ -39,6 +37,14 @@ const UnitOfMeasurement: React.FC = () => {
       sortDirections: ['ascend', 'descend'],
     },
     {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      // client-side string compare
+      sorter: (a, b) => a.description.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend'],
+    },
+    {
       title: 'Actions',
       key: 'actions',
       width: 50,
@@ -46,6 +52,7 @@ const UnitOfMeasurement: React.FC = () => {
       render: (_: any, record: UOM) => (
         <ActionDropdown<UOM>
           data={record}
+          apiEndpoint={URL}
           onAction={(action, menuId, item) => {
             console.log({ action, menuId, item });
           }}
@@ -63,19 +70,7 @@ const UnitOfMeasurement: React.FC = () => {
         defaultPageSize={20}
       />
 
-      <AppDrawer
-        onSubmit={() => {
-          console.log('submit in mode', drawerMode);
-          closeDrawer();
-        }}
-        extraFooterButtons={
-          drawerMode === 'edit_mode' ? <Button danger>Delete</Button> : null
-        }
-      >
-        {drawerMode === 'create_mode' && <div>Create form...</div>}
-        {drawerMode === 'edit_mode' && <div>Edit form...</div>}
-        {drawerMode === 'view_mode' && <div>Read‐only view...</div>}
-      </AppDrawer>
+      <UnitOfMeasureDrawer />
     </div>
   );
 };

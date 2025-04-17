@@ -11,6 +11,7 @@ export interface AppDrawerProps
   title?: string;
   /** Callback when the primary action is clicked */
   onSubmit?: () => void;
+  onClose: () => void;
   /** Optional additional buttons in the footer */
   extraFooterButtons?: React.ReactNode;
 }
@@ -26,6 +27,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({
   title,
   children,
   onSubmit,
+  onClose,
   extraFooterButtons,
   ...rest
 }) => {
@@ -33,12 +35,17 @@ const AppDrawer: React.FC<AppDrawerProps> = ({
 
   const drawerTitle = title ?? modeTitles[drawerMode];
 
+  const onCloseDrawer = () => {
+    onClose();
+    closeDrawer();
+  };
+
   return (
     <Drawer
       title={drawerTitle}
       placement="right"
       width={600}
-      onClose={closeDrawer}
+      onClose={onCloseDrawer}
       visible={drawerVisible}
       footer={
         <Space style={{ float: 'right' }}>

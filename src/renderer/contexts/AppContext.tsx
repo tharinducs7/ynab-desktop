@@ -28,8 +28,8 @@ interface AppContextProps {
   closeDrawer: () => void;
   drawerMode: DrawerMode;
 
-  currentData: any | null;
-  setCurrentData: (item: any | null) => void;
+  drawerData: any | null;
+  setDrawerData: (data: any | null) => void;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -51,8 +51,7 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(
     null,
   );
-  const [currentData, setCurrentData] = useState<any | null>(null);
-
+  const [drawerData, setDrawerData] = useState<any | null>(null);
   // Toggle function for sidebar collapsed state
   const toggleSidebar = useCallback(() => {
     setSidebarCollapsed((prev) => !prev);
@@ -68,6 +67,7 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const closeDrawer = useCallback(() => {
     setDrawerVisible(false);
+    setDrawerData(null);
   }, []);
 
   const value = useMemo(
@@ -82,8 +82,8 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       openDrawer,
       closeDrawer,
       drawerMode,
-      setCurrentData,
-      currentData,
+      drawerData,
+      setDrawerData,
     }),
     [
       closeDrawer,
@@ -94,8 +94,7 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       sidebarCollapsed,
       theme,
       toggleSidebar,
-      setCurrentData,
-      currentData,
+      drawerData,
     ],
   );
 

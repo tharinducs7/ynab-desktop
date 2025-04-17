@@ -151,7 +151,7 @@ const PrivateLayout: React.FC = () => {
       <Layout>
         <Sider
           width={sidebarCollapsed ? 60 : 260}
-          style={{ background: '#fff' }}
+          style={{ background: '#18cb96' }}
         >
           <SideMenu />
         </Sider>
