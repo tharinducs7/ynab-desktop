@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // src/components/DrawerHeader.tsx
 import React from 'react';
@@ -13,17 +14,24 @@ export type DrawerMode =
 
 interface DrawerHeaderProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   url: string;
   onCancel: () => void;
 }
 
 const DrawerHeader: React.FC<DrawerHeaderProps> = ({
   title,
-  subtitle,
+  subtitle = '',
   onCancel,
   url,
 }) => {
+  const { closeDrawer } = useAppContext();
+
+  const handleCancel = () => {
+    onCancel?.();
+    closeDrawer();
+  };
+
   return (
     <div
       style={{
@@ -50,11 +58,11 @@ const DrawerHeader: React.FC<DrawerHeaderProps> = ({
         variant="solid"
         icon={
           <CloseOutlined
-            onClick={onCancel}
+            onClick={handleCancel}
             style={{ fontSize: 16, cursor: 'pointer' }}
           />
         }
-        onClick={onCancel}
+        onClick={handleCancel}
       />
     </div>
   );

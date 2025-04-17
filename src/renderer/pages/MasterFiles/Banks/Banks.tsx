@@ -3,18 +3,19 @@ import React from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
-import UnitOfMeasureDrawer from './UnitOfMeasureDrawer';
-
+import BanksDrawer from './BanksDrawer';
+import { BASE_URL_ASSETS } from '../../../utils/httpClient';
 // 1) Define your row type
 interface UOM {
   id: string; // comes from API as string
   name: string;
   description: string;
+  logo: string; // add logo field to match the expected type
   // ...other fields if needed
 }
 
-const UnitOfMeasurement: React.FC = () => {
-  const URL: string = '/unit_of_measures';
+const Banks: React.FC = () => {
+  const URL: string = '/banks';
   // 2) Tell TS these columns are for UOM
   const userColumns: ColumnsType<UOM> = [
     {
@@ -32,17 +33,23 @@ const UnitOfMeasurement: React.FC = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      // client-side string compare
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['ascend', 'descend'],
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-      // client-side string compare
-      sorter: (a, b) => a.description.localeCompare(b.name),
-      sortDirections: ['ascend', 'descend'],
+      render: (_: any, record: UOM & { logo: string }) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <img
+            src={`${BASE_URL_ASSETS}${record.logo}`}
+            alt={record.name}
+            style={{
+              width: 32,
+              height: 32,
+              objectFit: 'cover',
+              borderRadius: 4,
+            }}
+          />
+          <span>{record.name}</span>
+        </div>
+      ),
     },
     {
       title: 'Actions',
@@ -62,7 +69,7 @@ const UnitOfMeasurement: React.FC = () => {
   ];
 
   return (
-    <div className="unit_of_measurement">
+    <div className="dashboard">
       <DataTable<UOM>
         apiEndpoint={URL}
         columns={userColumns}
@@ -70,9 +77,9 @@ const UnitOfMeasurement: React.FC = () => {
         defaultPageSize={20}
       />
 
-      <UnitOfMeasureDrawer />
+      <BanksDrawer />
     </div>
   );
 };
 
-export default UnitOfMeasurement;
+export default Banks;

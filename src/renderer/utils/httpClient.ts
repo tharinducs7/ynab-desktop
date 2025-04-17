@@ -4,6 +4,7 @@ import { message } from 'antd';
 
 // Set up the API base URL from an environment variable or fallback
 const BASE_URL = 'https://sadunac.wysepos.com/api';
+export const BASE_URL_ASSETS = 'https://sadunac.wysepos.com';
 
 const httpClient = axios.create({
   baseURL: BASE_URL,

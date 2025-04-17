@@ -4,21 +4,16 @@ import React from 'react';
 import { Form } from 'antd';
 import { useAppContext } from '../../../contexts/AppContext';
 import uomImage from '../../../../resources/assets/icons/ruler.png';
-import {
-  TextAreaField,
-  NumberInputField,
-  TextInputField,
-  DatePickerField,
-} from '../../../components/Shared';
+import TextInputField from '../../../components/Shared/TextInputField';
 import AppDrawer from '../../../components/AppDrawer/AppDrawer';
 
-export interface UOMValues {
+export interface BanksValues {
   name: string;
   description: string;
 }
 
-const UnitOfMeasureDrawer: React.FC = ({ ...rest }) => {
-  const [form] = Form.useForm<UOMValues>();
+const BanksDrawer: React.FC = ({ ...rest }) => {
+  const [form] = Form.useForm<BanksValues>();
 
   const { drawerVisible, drawerMode, drawerData } = useAppContext();
   const readOnly = drawerMode === 'view_mode';
@@ -33,7 +28,7 @@ const UnitOfMeasureDrawer: React.FC = ({ ...rest }) => {
     }
   }, [drawerMode, drawerData, form]);
 
-  const handleFinish = (vals: UOMValues) => {
+  const handleFinish = (vals: BanksValues) => {
     console.log(vals, 'vals');
 
     form.resetFields();
@@ -71,7 +66,7 @@ const UnitOfMeasureDrawer: React.FC = ({ ...rest }) => {
       onSave={onSubmit}
       {...rest}
     >
-      <Form<UOMValues>
+      <Form<BanksValues>
         form={form}
         layout="horizontal"
         onFinish={handleFinish}
@@ -83,19 +78,9 @@ const UnitOfMeasureDrawer: React.FC = ({ ...rest }) => {
         }}
       >
         <TextInputField name="name" label="Name" required readOnly={readOnly} />
-
-        <TextAreaField
-          name="description"
-          label="Description"
-          placeholder="Enter description"
-          readOnly={readOnly}
-        />
-
-        <NumberInputField name="precision" label="Precision" min={0} max={10} />
-        <DatePickerField name="createdAt" label="Created At" />
       </Form>
     </AppDrawer>
   );
 };
 
-export default UnitOfMeasureDrawer;
+export default BanksDrawer;

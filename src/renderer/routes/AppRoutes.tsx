@@ -8,6 +8,7 @@ import PrivateLayout from '../components/Layouts/PrivateLayout';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import NotFound from '../pages/Errors/NotFound';
 import UnitOfMeasurement from '../pages/MasterFiles/UnitOfMeasurement/UnitOfMeasurement';
+import Banks from '../pages/MasterFiles/Banks/Banks';
 
 const AppRoutes: React.FC = () => {
   const { authData } = useAuth();
@@ -31,6 +32,8 @@ const AppRoutes: React.FC = () => {
           path="master_file/unit_of_measures"
           element={<UnitOfMeasurement />}
         />
+
+        <Route path="master_file/banks" element={<Banks />} />
 
         {/* any other unmatched under "/" */}
         <Route path="*" element={<NotFound />} />
