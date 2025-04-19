@@ -1,20 +1,21 @@
+/* eslint-disable react/jsx-no-undef */
 // src/pages/UnitOfMeasurement.tsx
 import React from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
-import UnitOfMeasureDrawer from './UnitOfMeasureDrawer';
-
+import VehicleLogoPopover from './VehicleLogoPopover';
 // 1) Define your row type
 interface UOM {
   id: string; // comes from API as string
-  name: string;
-  description: string;
+  make: string;
+  model: string;
+  logo: string; // add logo field to match the expected type
   // ...other fields if needed
 }
 
-const UnitOfMeasurement: React.FC = () => {
-  const URL: string = '/unit_of_measures';
+const Vehicles: React.FC = () => {
+  const URL: string = '/vehicles';
   // 2) Tell TS these columns are for UOM
   const userColumns: ColumnsType<UOM> = [
     {
@@ -28,32 +29,38 @@ const UnitOfMeasurement: React.FC = () => {
       // 4) Render as a number
       render: (val: string) => Number(val),
     },
-
     {
-      title: 'Category',
-      dataIndex: 'category',
-      key: 'category',
-      width: 200,
-      // client-side string compare
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      title: 'Make',
+      dataIndex: 'make',
+      key: 'make',
+      sorter: (a, b) => a.make.localeCompare(b.make),
       sortDirections: ['ascend', 'descend'],
+      render: (_: any, record: UOM & { logo: string }) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <img
+            src={record.logo}
+            alt={record.make}
+            style={{
+              width: 32,
+              // height: 32,
+              objectFit: 'cover',
+              borderRadius: 4,
+            }}
+          />
+          <span>
+            {record.make} {record.model}
+          </span>
+        </div>
+      ),
     },
     {
-      title: 'Name',
-      dataIndex: 'full_name',
-      key: 'full_name',
-      width: 100,
-      // client-side string compare
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      sortDirections: ['ascend', 'descend'],
-    },
-    {
-      title: 'Symbol',
-      dataIndex: 'symbol',
-      key: 'symbol',
-      // client-side string compare
-      sorter: (a, b) => a.description.localeCompare(b.name),
-      sortDirections: ['ascend', 'descend'],
+      title: 'Logo',
+      key: 'logo',
+      dataIndex: 'logo',
+      width: 80,
+      render: (_: any, record: UOM) => (
+        <VehicleLogoPopover make={record.make} model={record.model} />
+      ),
     },
     {
       title: 'Actions',
@@ -73,7 +80,7 @@ const UnitOfMeasurement: React.FC = () => {
   ];
 
   return (
-    <div className="unit_of_measurement">
+    <div className="dashboard">
       <DataTable<UOM>
         apiEndpoint={URL}
         columns={userColumns}
@@ -81,9 +88,9 @@ const UnitOfMeasurement: React.FC = () => {
         defaultPageSize={20}
       />
 
-      <UnitOfMeasureDrawer />
+      {/* <BanksDrawer /> */}
     </div>
   );
 };
 
-export default UnitOfMeasurement;
+export default Vehicles;

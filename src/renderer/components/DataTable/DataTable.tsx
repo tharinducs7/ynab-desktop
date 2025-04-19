@@ -54,6 +54,7 @@ const DataTable = <T extends Record<string, any>>({
     () => debounce((val: string) => setSearch(val), 300),
     [],
   );
+  console.log(selectedMenuItem, 'selectedMenuItem');
 
   const { data, isLoading } = useQuery<ApiResponse<T>, Error>({
     queryKey: [

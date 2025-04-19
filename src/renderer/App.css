@@ -16,3 +16,7 @@
 .search-input .ant-input-clear-icon {
   color: red;
 }
+
+.text-right {
+  text-align: right;
+}
