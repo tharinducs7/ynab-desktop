@@ -4,13 +4,10 @@ import React from 'react';
 import { Form } from 'antd';
 import { useAppContext } from '../../../contexts/AppContext';
 import uomImage from '../../../../resources/assets/icons/ruler.png';
-import {
-  TextAreaField,
-  NumberInputField,
-  TextInputField,
-  DatePickerField,
-} from '../../../components/Shared';
+import { TextInputField } from '../../../components/Shared';
 import AppDrawer from '../../../components/AppDrawer/AppDrawer';
+import FormFieldWrapper from '../../../components/Shared/FormFieldWrapper';
+import UnitGroupSelect from '../../../components/ResubaleDataComponents/UnitGroupSelect';
 
 export interface UOMValues {
   name: string;
@@ -83,17 +80,22 @@ const UnitOfMeasureDrawer: React.FC = ({ ...rest }) => {
           ...drawerData,
         }}
       >
-        <TextInputField name="name" label="Name" required readOnly={readOnly} />
-
-        <TextAreaField
-          name="description"
-          label="Description"
-          placeholder="Enter description"
+        <FormFieldWrapper name="category" label="Category">
+          <UnitGroupSelect />
+        </FormFieldWrapper>
+        <TextInputField
+          name="full_name"
+          label="Full Name"
+          required
           readOnly={readOnly}
         />
-
-        <NumberInputField name="precision" label="Precision" min={0} max={10} />
-        <DatePickerField name="createdAt" label="Created At" />
+        <TextInputField
+          name="symbol"
+          label="Symbol"
+          required
+          readOnly={readOnly}
+        />
+        <TextInputField name="icon" label="Icon" required readOnly={readOnly} />
       </Form>
     </AppDrawer>
   );

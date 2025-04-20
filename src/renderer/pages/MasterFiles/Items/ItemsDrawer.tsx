@@ -114,12 +114,12 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
         <Row gutter={16}>
           <Col span={12}>
             <FormFieldWrapper name="category_id" label="Category">
-              <CategorySelect />
+              <CategorySelect disabled={readOnly} />
             </FormFieldWrapper>
           </Col>
           <Col span={12}>
             <FormFieldWrapper name="unit_of_measure_id" label="Unit of Measure">
-              <UnitOfMeasureSelect />
+              <UnitOfMeasureSelect disabled={readOnly} />
             </FormFieldWrapper>
           </Col>
         </Row>
@@ -139,7 +139,7 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
           </Col>
           <Col span={12}>
             <NumberInputField
-              name="damaged_quantity"
+              name="damage_quantity"
               label="Damaged Quantity"
               min={0}
               readOnly={readOnly}
@@ -154,7 +154,7 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
         <Row gutter={24}>
           <Col span={8}>
             <NumberInputField
-              name="cost_price"
+              name="batch_cost_price"
               label="Cost Price"
               min={0}
               readOnly={readOnly}
@@ -162,7 +162,7 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
           </Col>
           <Col span={8}>
             <NumberInputField
-              name="selling_price"
+              name="batch_selling_price"
               label="Selling Price"
               min={0}
               readOnly={readOnly}

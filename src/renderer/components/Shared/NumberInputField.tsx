@@ -23,7 +23,7 @@ const NumberInputField: React.FC<Props> = (props) => {
         min={props?.min}
         max={props?.max}
         style={{ width: '100%' }}
-        placeholder={props?.placeholder}
+        placeholder={props.placeholder}
       />
     </FormFieldWrapper>
   );
