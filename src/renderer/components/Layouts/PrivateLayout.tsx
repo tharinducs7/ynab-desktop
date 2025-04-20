@@ -30,7 +30,7 @@ const { Header, Sider, Content } = Layout;
 const PrivateLayout: React.FC = () => {
   const navigate = useNavigate();
   const { authData, logout } = useAuth();
-  const { sidebarCollapsed, toggleSidebar, selectedMenuItem, loadingDrawer } =
+  const { sidebarCollapsed, toggleSidebar, selectedMenuItem, loadingPage } =
     useAppContext();
   const userName = authData?.user?.name;
   // Define user menu actions.
@@ -176,7 +176,7 @@ const PrivateLayout: React.FC = () => {
           >
             {/* Nested content will render here */}
             <Outlet />
-            <Spin spinning={loadingDrawer} fullscreen />
+            <Spin spinning={loadingPage} fullscreen />
           </Content>
         </Layout>
       </Layout>

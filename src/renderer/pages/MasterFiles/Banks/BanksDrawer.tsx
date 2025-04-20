@@ -36,11 +36,11 @@ const BanksDrawer: React.FC = ({ ...rest }) => {
 
   let title = '';
   if (drawerMode === 'create_mode') {
-    title = 'Add Unit of Measure';
+    title = 'Add Bank';
   } else if (drawerMode === 'edit_mode') {
-    title = 'Edit Unit of Measure';
+    title = 'Edit Bank';
   } else {
-    title = 'View Unit of Measure';
+    title = 'View Bank';
   }
 
   const subtitle =

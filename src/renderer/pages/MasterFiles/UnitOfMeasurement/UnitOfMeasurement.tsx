@@ -4,22 +4,12 @@ import type { ColumnsType } from 'antd/es/table';
 import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
 import UnitOfMeasureDrawer from './UnitOfMeasureDrawer';
-
-// 1) Define your row type
-interface UOM {
-  id: string; // comes from API as string
-  name: string;
-  description: string;
-  category: string;
-  symbol: string;
-  icon: string;
-  // ...other fields if needed
-}
+import { UOM_TYPE } from '../../../types/uom';
 
 const UnitOfMeasurement: React.FC = () => {
   const URL: string = '/unit_of_measures';
-  // 2) Tell TS these columns are for UOM
-  const userColumns: ColumnsType<UOM> = [
+  // 2) Tell TS these columns are for UOM_TYPE
+  const userColumns: ColumnsType<UOM_TYPE> = [
     {
       title: 'Id',
       dataIndex: 'id',
@@ -71,8 +61,8 @@ const UnitOfMeasurement: React.FC = () => {
       key: 'actions',
       width: 40,
       fixed: 'right',
-      render: (_: any, record: UOM) => (
-        <ActionDropdown<UOM>
+      render: (_: any, record: UOM_TYPE) => (
+        <ActionDropdown<UOM_TYPE>
           data={record}
           apiEndpoint={URL}
           onAction={(action, menuId, item) => {
@@ -85,11 +75,11 @@ const UnitOfMeasurement: React.FC = () => {
 
   return (
     <div className="unit_of_measurement">
-      <DataTable<UOM>
+      <DataTable<UOM_TYPE>
         apiEndpoint={URL}
         columns={userColumns}
         rowKey="id"
-        defaultPageSize={20}
+        defaultPageSize={10}
       />
 
       <UnitOfMeasureDrawer />

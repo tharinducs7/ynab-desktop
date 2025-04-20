@@ -5,19 +5,12 @@ import type { ColumnsType } from 'antd/es/table';
 import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
 import VehicleLogoPopover from './VehicleLogoPopover';
-// 1) Define your row type
-interface UOM {
-  id: string; // comes from API as string
-  make: string;
-  model: string;
-  logo: string; // add logo field to match the expected type
-  // ...other fields if needed
-}
+import { VHEICLE_TYPE } from '../../../types/vehicle';
 
 const Vehicles: React.FC = () => {
   const URL: string = '/vehicles';
   // 2) Tell TS these columns are for UOM
-  const userColumns: ColumnsType<UOM> = [
+  const userColumns: ColumnsType<VHEICLE_TYPE> = [
     {
       title: 'Id',
       dataIndex: 'id',
@@ -35,7 +28,7 @@ const Vehicles: React.FC = () => {
       key: 'make',
       sorter: (a, b) => a.make.localeCompare(b.make),
       sortDirections: ['ascend', 'descend'],
-      render: (_: any, record: UOM & { logo: string }) => (
+      render: (_: any, record: VHEICLE_TYPE & { logo: string }) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <img
             src={record.logo}
@@ -58,7 +51,7 @@ const Vehicles: React.FC = () => {
       key: 'logo',
       dataIndex: 'logo',
       width: 80,
-      render: (_: any, record: UOM) => (
+      render: (_: any, record: VHEICLE_TYPE) => (
         <VehicleLogoPopover make={record.make} model={record.model} />
       ),
     },
@@ -67,8 +60,8 @@ const Vehicles: React.FC = () => {
       key: 'actions',
       width: 50,
       fixed: 'right',
-      render: (_: any, record: UOM) => (
-        <ActionDropdown<UOM>
+      render: (_: any, record: VHEICLE_TYPE) => (
+        <ActionDropdown<VHEICLE_TYPE>
           data={record}
           apiEndpoint={URL}
           onAction={(action, menuId, item) => {
@@ -81,11 +74,11 @@ const Vehicles: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <DataTable<UOM>
+      <DataTable<VHEICLE_TYPE>
         apiEndpoint={URL}
         columns={userColumns}
         rowKey="id"
-        defaultPageSize={20}
+        defaultPageSize={10}
       />
 
       {/* <BanksDrawer /> */}

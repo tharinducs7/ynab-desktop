@@ -33,6 +33,12 @@ interface AppContextProps {
 
   loadingDrawer: boolean;
   setLoadingDrawer: (isloading: boolean) => void;
+
+  loadingPage: boolean;
+  setLoadingPage: (isloading: boolean) => void;
+
+  reloadTable?: () => void;
+  setReloadTable?: (fn: () => void) => void;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -63,6 +69,9 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerMode, setDrawerMode] = useState<DrawerMode>('view_mode');
   const [loadingDrawer, setLoadingDrawer] = useState<boolean>(false);
+  const [loadingPage, setLoadingPage] = useState<boolean>(false);
+  const [reloadTable, setReloadTable] = useState<() => void>(() => () => {});
+
   const openDrawer = useCallback((mode: DrawerMode) => {
     setDrawerMode(mode);
     setDrawerVisible(true);
@@ -89,6 +98,10 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       setDrawerData,
       loadingDrawer,
       setLoadingDrawer,
+      loadingPage,
+      setLoadingPage,
+      reloadTable,
+      setReloadTable,
     }),
     [
       closeDrawer,
@@ -101,6 +114,8 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       toggleSidebar,
       drawerData,
       loadingDrawer,
+      loadingPage,
+      reloadTable,
     ],
   );
 

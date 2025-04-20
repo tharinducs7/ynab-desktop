@@ -37,6 +37,7 @@ const UnitGroupSelect: React.FC<CategorySelectProps> = ({
       { value: 'Volume / Capacity', label: 'Volume / Capacity' },
       { value: 'Length / Distance', label: 'Length / Distance' },
       { value: 'Weight / Mass', label: 'Weight / Mass' },
+      { value: 'General Units', label: 'General Units' },
     ];
     return data;
   }, []);

@@ -21,6 +21,7 @@ const DatePickerField: React.FC<Props> = (props) => {
         style={{ width: '100%' }}
         placeholder={props.placeholder}
         disabled={props.readOnly}
+        format="YYYY-MM-DD"
       />
     </FormFieldWrapper>
   );

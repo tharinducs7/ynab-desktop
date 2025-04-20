@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 // src/components/DataTable/DataTable.tsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Table, Input, Space, Button } from 'antd';
 import type { TableProps, TablePaginationConfig } from 'antd';
 import {
@@ -37,7 +37,7 @@ const DataTable = <T extends Record<string, any>>({
   defaultPageSize = 10,
 }: DataTableProps<T>) => {
   const [search, setSearch] = useState('');
-  const { selectedMenuItem, openDrawer } = useAppContext();
+  const { selectedMenuItem, openDrawer, setReloadTable } = useAppContext();
   const [sorter] = useState<{
     field?: string;
     order?: 'ascend' | 'descend';
@@ -56,7 +56,7 @@ const DataTable = <T extends Record<string, any>>({
   );
   console.log(selectedMenuItem, 'selectedMenuItem');
 
-  const { data, isLoading } = useQuery<ApiResponse<T>, Error>({
+  const { data, isLoading, refetch } = useQuery<ApiResponse<T>, Error>({
     queryKey: [
       apiEndpoint,
       search,
@@ -81,13 +81,17 @@ const DataTable = <T extends Record<string, any>>({
         params.sortField = sorter.field;
         params.sortOrder = sorter.order === 'ascend' ? 'asc' : 'desc';
       }
-      const response = await apiClient.get(apiEndpoint, {
-        params,
-      });
+      const response = await apiClient.get(apiEndpoint, { params });
       return response.data;
     },
-    staleTime: 300000, // 5 minutes
+    staleTime: 300000,
   });
+
+  useEffect(() => {
+    if (setReloadTable) {
+      setReloadTable(() => refetch);
+    }
+  }, [refetch, setReloadTable]);
 
   const handleTableChange: TableProps<T>['onChange'] = (pager) => {
     setPagination({

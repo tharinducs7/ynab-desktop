@@ -7,14 +7,12 @@ import ActionDropdown from '../../../components/DataTable/ActionDropdown';
 import QuantityWithUnit from '../../../components/Common/QuantityWithUnit';
 import PriceDisplay from '../../../components/Common/PriceDisplay';
 import ItemsDrawer from './ItemsDrawer';
-import { ITEM } from '../../../types/item';
-// import { useAppContext } from '../../../contexts/AppContext';
+import { ITEM_TYPE } from '../../../types/item';
 
 const Items: React.FC = () => {
   const URL: string = '/items';
-  // const { setLoadingDrawer, loadingDrawer} = useAppContext();
-  // 2) Tell TS these columns are for UOM
-  const userColumns: ColumnsType<ITEM> = [
+
+  const userColumns: ColumnsType<ITEM_TYPE> = [
     {
       title: 'Id',
       dataIndex: 'id',
@@ -66,7 +64,7 @@ const Items: React.FC = () => {
       key: 'quantity',
       dataIndex: 'quantity',
       width: 80,
-      render: (_: any, record: ITEM) => (
+      render: (_: any, record: ITEM_TYPE) => (
         <QuantityWithUnit
           value={record.quantity}
           unit={record.unit_of_measure_symbol}
@@ -102,7 +100,7 @@ const Items: React.FC = () => {
       dataIndex: 'batch_cost_price',
       className: 'text-right',
       width: 200,
-      render: (_: any, record: ITEM) => (
+      render: (_: any, record: ITEM_TYPE) => (
         <PriceDisplay value={record.batch_cost_price} />
       ),
     },
@@ -112,7 +110,7 @@ const Items: React.FC = () => {
       dataIndex: 'discount_amount',
       className: 'text-right',
       width: 200,
-      render: (_: any, record: ITEM) => (
+      render: (_: any, record: ITEM_TYPE) => (
         <PriceDisplay value={record.discount_amount} />
       ),
     },
@@ -122,7 +120,7 @@ const Items: React.FC = () => {
       dataIndex: 'batch_selling_price',
       className: 'text-right',
       width: 200,
-      render: (_: any, record: ITEM) => (
+      render: (_: any, record: ITEM_TYPE) => (
         <PriceDisplay value={record.batch_selling_price} />
       ),
     },
@@ -131,8 +129,8 @@ const Items: React.FC = () => {
       key: 'actions',
       width: 50,
       fixed: 'right',
-      render: (_: any, record: ITEM) => (
-        <ActionDropdown<ITEM>
+      render: (_: any, record: ITEM_TYPE) => (
+        <ActionDropdown<ITEM_TYPE>
           data={record}
           apiEndpoint={URL}
           onAction={(action, menuId, item) => {
@@ -145,11 +143,11 @@ const Items: React.FC = () => {
 
   return (
     <div className="items">
-      <DataTable<ITEM>
+      <DataTable<ITEM_TYPE>
         apiEndpoint={URL}
         columns={userColumns}
         rowKey="id"
-        defaultPageSize={20}
+        defaultPageSize={10}
       />
 
       <ItemsDrawer />

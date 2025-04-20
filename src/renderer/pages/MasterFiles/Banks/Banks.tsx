@@ -5,19 +5,12 @@ import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
 import BanksDrawer from './BanksDrawer';
 import { BASE_URL_ASSETS } from '../../../utils/httpClient';
-// 1) Define your row type
-interface UOM {
-  id: string; // comes from API as string
-  name: string;
-  description: string;
-  logo: string; // add logo field to match the expected type
-  // ...other fields if needed
-}
+import { BANK_TYPE } from '../../../types/bank';
 
 const Banks: React.FC = () => {
   const URL: string = '/banks';
   // 2) Tell TS these columns are for UOM
-  const userColumns: ColumnsType<UOM> = [
+  const userColumns: ColumnsType<BANK_TYPE> = [
     {
       title: 'Id',
       dataIndex: 'id',
@@ -35,7 +28,7 @@ const Banks: React.FC = () => {
       key: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['ascend', 'descend'],
-      render: (_: any, record: UOM & { logo: string }) => (
+      render: (_: any, record: BANK_TYPE & { logo: string }) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <img
             src={`${BASE_URL_ASSETS}${record.logo}`}
@@ -56,8 +49,8 @@ const Banks: React.FC = () => {
       key: 'actions',
       width: 50,
       fixed: 'right',
-      render: (_: any, record: UOM) => (
-        <ActionDropdown<UOM>
+      render: (_: any, record: BANK_TYPE) => (
+        <ActionDropdown<BANK_TYPE>
           data={record}
           apiEndpoint={URL}
           onAction={(action, menuId, item) => {
@@ -70,7 +63,7 @@ const Banks: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <DataTable<UOM>
+      <DataTable<BANK_TYPE>
         apiEndpoint={URL}
         columns={userColumns}
         rowKey="id"

@@ -11,7 +11,7 @@ interface DrawerFooterProps {
 }
 
 const DrawerFooter: React.FC<DrawerFooterProps> = ({ onCancel, onSave }) => {
-  const { closeDrawer, selectedMenuItem } = useAppContext();
+  const { closeDrawer, selectedMenuItem, drawerMode } = useAppContext();
   const perms = selectedMenuItem?.permissions;
 
   const handleCancel = () => {
@@ -29,7 +29,7 @@ const DrawerFooter: React.FC<DrawerFooterProps> = ({ onCancel, onSave }) => {
         Cancel
       </Button>
 
-      {perms?.can_create && (
+      {perms?.can_create && drawerMode !== 'view_mode' && (
         <Button
           type="primary"
           icon={<SaveOutlined />}

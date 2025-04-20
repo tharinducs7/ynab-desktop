@@ -1,4 +1,4 @@
-export interface ITEM {
+export interface ITEM_TYPE {
   id: string; // comes from API as string
   name: string;
   category_name: string;
@@ -11,5 +11,8 @@ export interface ITEM {
   damage_quantity: number;
   discount_amount: number;
   warranty: string;
+  expiry_date: any;
+  images: any;
+  is_active: any;
   // ...other fields if needed
 }

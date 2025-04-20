@@ -2,9 +2,10 @@
 // src/components/AppDrawer/AppDrawer.tsx
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Drawer } from 'antd';
+import { Drawer, Spin } from 'antd';
 import DrawerHeader from './DrawerHeader';
 import DrawerFooter from './DrawerFooter';
+import { useAppContext } from '../../contexts/AppContext';
 
 interface AppDrawerProps {
   visible: boolean;
@@ -30,6 +31,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({
   size = 'default',
   ...rest
 }) => {
+  const { loadingDrawer } = useAppContext();
   return (
     <Drawer
       title={
@@ -54,6 +56,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({
       {...rest}
     >
       {children}
+      <Spin spinning={loadingDrawer} fullscreen />
     </Drawer>
   );
 };
