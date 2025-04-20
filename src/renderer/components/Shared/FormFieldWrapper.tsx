@@ -1,5 +1,4 @@
 /* eslint-disable react/require-default-props */
-// components/FormFieldWrapper.tsx
 import React from 'react';
 import { Form } from 'antd';
 import type { Rule } from 'antd/es/form';
@@ -37,12 +36,14 @@ const FormFieldWrapper: React.FC<Props> = ({
   return (
     <Form.Item
       name={name}
-      label={label}
+      label={<span style={{ whiteSpace: 'normal' }}>{label}</span>}
       rules={[...baseRules, ...rules]}
       hasFeedback
-      labelCol={{ span: 4 }}
+      labelCol={{ flex: '160px' }} // Give label a fixed width that can wrap
+      wrapperCol={{ flex: 1 }} // Remaining space for input
       labelAlign="left"
       colon={false}
+      style={{ marginBottom: 16 }}
     >
       {clonedChild}
     </Form.Item>

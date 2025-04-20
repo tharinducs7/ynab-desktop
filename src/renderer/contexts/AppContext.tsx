@@ -30,6 +30,9 @@ interface AppContextProps {
 
   drawerData: any | null;
   setDrawerData: (data: any | null) => void;
+
+  loadingDrawer: boolean;
+  setLoadingDrawer: (isloading: boolean) => void;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -59,7 +62,7 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerMode, setDrawerMode] = useState<DrawerMode>('view_mode');
-
+  const [loadingDrawer, setLoadingDrawer] = useState<boolean>(false);
   const openDrawer = useCallback((mode: DrawerMode) => {
     setDrawerMode(mode);
     setDrawerVisible(true);
@@ -84,6 +87,8 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       drawerMode,
       drawerData,
       setDrawerData,
+      loadingDrawer,
+      setLoadingDrawer,
     }),
     [
       closeDrawer,
@@ -95,6 +100,7 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
       theme,
       toggleSidebar,
       drawerData,
+      loadingDrawer,
     ],
   );
 

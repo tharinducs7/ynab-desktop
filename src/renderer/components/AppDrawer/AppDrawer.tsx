@@ -15,6 +15,7 @@ interface AppDrawerProps {
   onSave?: () => void;
   children: React.ReactNode;
   width?: number;
+  size?: 'default' | 'large' | undefined;
 }
 
 const AppDrawer: React.FC<AppDrawerProps> = ({
@@ -26,6 +27,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({
   onSave = () => {},
   children,
   width = 600,
+  size = 'default',
   ...rest
 }) => {
   return (
@@ -38,6 +40,7 @@ const AppDrawer: React.FC<AppDrawerProps> = ({
           onCancel={onCancel}
         />
       }
+      size={size}
       visible={visible}
       closable={false}
       onClose={onCancel}

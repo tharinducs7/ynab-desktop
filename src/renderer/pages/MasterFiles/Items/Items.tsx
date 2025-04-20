@@ -6,26 +6,13 @@ import DataTable from '../../../components/DataTable/DataTable';
 import ActionDropdown from '../../../components/DataTable/ActionDropdown';
 import QuantityWithUnit from '../../../components/Common/QuantityWithUnit';
 import PriceDisplay from '../../../components/Common/PriceDisplay';
-
-// 1) Define your row type
-interface ITEM {
-  id: string; // comes from API as string
-  name: string;
-  category_name: string;
-  item_code: string;
-  quantity: number;
-  unit_of_measure_symbol: string;
-  unit_of_measure_full_name: string;
-  batch_selling_price: number;
-  batch_cost_price: number;
-  damage_quantity: number;
-  discount_amount: number;
-  warranty: string;
-  // ...other fields if needed
-}
+import ItemsDrawer from './ItemsDrawer';
+import { ITEM } from '../../../types/item';
+// import { useAppContext } from '../../../contexts/AppContext';
 
 const Items: React.FC = () => {
   const URL: string = '/items';
+  // const { setLoadingDrawer, loadingDrawer} = useAppContext();
   // 2) Tell TS these columns are for UOM
   const userColumns: ColumnsType<ITEM> = [
     {
@@ -157,7 +144,7 @@ const Items: React.FC = () => {
   ];
 
   return (
-    <div className="unit_of_measurement">
+    <div className="items">
       <DataTable<ITEM>
         apiEndpoint={URL}
         columns={userColumns}
@@ -165,7 +152,7 @@ const Items: React.FC = () => {
         defaultPageSize={20}
       />
 
-      {/* <UnitOfMeasureDrawer /> */}
+      <ItemsDrawer />
     </div>
   );
 };

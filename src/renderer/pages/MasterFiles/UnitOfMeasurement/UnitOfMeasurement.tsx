@@ -10,6 +10,9 @@ interface UOM {
   id: string; // comes from API as string
   name: string;
   description: string;
+  category: string;
+  symbol: string;
+  icon: string;
   // ...other fields if needed
 }
 
@@ -35,16 +38,16 @@ const UnitOfMeasurement: React.FC = () => {
       key: 'category',
       width: 200,
       // client-side string compare
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      // sorter: (a, b) => a?.category.localeCompare(b?.category),
       sortDirections: ['ascend', 'descend'],
     },
     {
       title: 'Name',
       dataIndex: 'full_name',
       key: 'full_name',
-      width: 100,
+      // width: 100,
       // client-side string compare
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      // sorter: (a, b) => a?.name.localeCompare(b?.name),
       sortDirections: ['ascend', 'descend'],
     },
     {
@@ -52,13 +55,21 @@ const UnitOfMeasurement: React.FC = () => {
       dataIndex: 'symbol',
       key: 'symbol',
       // client-side string compare
-      sorter: (a, b) => a.description.localeCompare(b.name),
+      // sorter: (a, b) => a?.symbol.localeCompare(b?.symbol),
+      sortDirections: ['ascend', 'descend'],
+    },
+    {
+      title: 'Icon',
+      dataIndex: 'icon',
+      key: 'icon',
+      // client-side string compare
+      // sorter: (a, b) => a?.icon.localeCompare(b?.icon),
       sortDirections: ['ascend', 'descend'],
     },
     {
       title: 'Actions',
       key: 'actions',
-      width: 50,
+      width: 40,
       fixed: 'right',
       render: (_: any, record: UOM) => (
         <ActionDropdown<UOM>

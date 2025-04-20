@@ -64,6 +64,7 @@ const BanksDrawer: React.FC = ({ ...rest }) => {
       icon={uomImage}
       onCancel={onClose}
       onSave={onSubmit}
+      size="default"
       {...rest}
     >
       <Form<BanksValues>

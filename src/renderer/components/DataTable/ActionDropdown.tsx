@@ -32,7 +32,8 @@ const ActionDropdown = <T extends Record<string, any>>({
   apiEndpoint,
   onAction,
 }: ActionDropdownProps<T>) => {
-  const { selectedMenuItem, openDrawer, setDrawerData } = useAppContext();
+  const { selectedMenuItem, openDrawer, setDrawerData, setLoadingDrawer } =
+    useAppContext();
   const perms = selectedMenuItem?.permissions;
   const menuId = selectedMenuItem?.menuId;
 
@@ -109,12 +110,15 @@ const ActionDropdown = <T extends Record<string, any>>({
   }, [perms, iconMap.view, iconMap.edit, iconMap.delete]);
 
   const onMenuClick: MenuProps['onClick'] = async ({ key }) => {
+    setLoadingDrawer(true);
     // If creating, no need to fetch details
     if (key === 'create_mode') {
       setDrawerData(null);
       openDrawer(key as any);
+      setLoadingDrawer(false);
     } else {
       // fetch detail from `${apiEndpoint}/${data.id}`
+      setLoadingDrawer(true);
       try {
         const resp = await apiClient.get(`${apiEndpoint}/${(data as any).id}`);
         setDrawerData(resp.data.data);
@@ -123,6 +127,7 @@ const ActionDropdown = <T extends Record<string, any>>({
         setDrawerData(null);
       }
       openDrawer(key as any);
+      setLoadingDrawer(false);
     }
 
     if (onAction) onAction(key, menuId, data);

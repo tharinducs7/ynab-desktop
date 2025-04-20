@@ -138,7 +138,7 @@ const DataTable = <T extends Record<string, any>>({
       </div>
 
       <Table<T>
-        size="small"
+        size="middle"
         scroll={{ x: 'max-content' }}
         rowKey={rowKey}
         columns={processedColumns}

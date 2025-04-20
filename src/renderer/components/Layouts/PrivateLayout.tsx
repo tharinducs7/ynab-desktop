@@ -1,5 +1,14 @@
 import React from 'react';
-import { Layout, Popover, Dropdown, Avatar, Menu, Button, Flex } from 'antd';
+import {
+  Layout,
+  Popover,
+  Dropdown,
+  Avatar,
+  Menu,
+  Button,
+  Flex,
+  Spin,
+} from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   BellOutlined,
@@ -21,7 +30,8 @@ const { Header, Sider, Content } = Layout;
 const PrivateLayout: React.FC = () => {
   const navigate = useNavigate();
   const { authData, logout } = useAuth();
-  const { sidebarCollapsed, toggleSidebar, selectedMenuItem } = useAppContext();
+  const { sidebarCollapsed, toggleSidebar, selectedMenuItem, loadingDrawer } =
+    useAppContext();
   const userName = authData?.user?.name;
   // Define user menu actions.
   const handleUserMenuClick = (e: any) => {
@@ -166,6 +176,7 @@ const PrivateLayout: React.FC = () => {
           >
             {/* Nested content will render here */}
             <Outlet />
+            <Spin spinning={loadingDrawer} fullscreen />
           </Content>
         </Layout>
       </Layout>
