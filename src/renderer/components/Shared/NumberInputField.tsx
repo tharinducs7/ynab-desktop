@@ -14,6 +14,7 @@ interface Props {
   rules?: any[];
   min?: number;
   max?: number;
+  labelCol?: string;
 }
 
 const NumberInputField: React.FC<Props> = (props) => {

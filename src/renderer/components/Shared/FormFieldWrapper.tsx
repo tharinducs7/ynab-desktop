@@ -11,6 +11,7 @@ interface Props {
   rules?: Rule[];
   readOnly?: boolean;
   disabled?: boolean;
+  labelCol?: string;
 }
 
 const FormFieldWrapper: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const FormFieldWrapper: React.FC<Props> = ({
   rules = [],
   readOnly = false,
   disabled = false,
+  labelCol = '160px',
 }) => {
   const baseRules: Rule[] = required
     ? [{ required: true, message: `Please enter ${label.toLowerCase()}` }]
@@ -39,7 +41,7 @@ const FormFieldWrapper: React.FC<Props> = ({
       label={<span style={{ whiteSpace: 'normal' }}>{label}</span>}
       rules={[...baseRules, ...rules]}
       hasFeedback
-      labelCol={{ flex: '160px' }} // Give label a fixed width that can wrap
+      labelCol={{ flex: labelCol }} // Give label a fixed width that can wrap
       wrapperCol={{ flex: 1 }} // Remaining space for input
       labelAlign="left"
       colon={false}

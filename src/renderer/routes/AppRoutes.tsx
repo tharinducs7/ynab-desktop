@@ -11,6 +11,7 @@ import UnitOfMeasurement from '../pages/MasterFiles/UnitOfMeasurement/UnitOfMeas
 import Banks from '../pages/MasterFiles/Banks/Banks';
 import Vehicles from '../pages/MasterFiles/Vehicles/Vehicles';
 import Items from '../pages/MasterFiles/Items/Items';
+import Customers from '../pages/MasterFiles/Customers/Customers';
 
 const AppRoutes: React.FC = () => {
   const { authData } = useAuth();
@@ -37,6 +38,8 @@ const AppRoutes: React.FC = () => {
 
         <Route path="master_file/banks" element={<Banks />} />
         <Route path="master_file/items" element={<Items />} />
+        <Route path="master_file/customers" element={<Customers />} />
+
         <Route path="vehicles-management/vehicles" element={<Vehicles />} />
         {/* any other unmatched under "/" */}
         <Route path="*" element={<NotFound />} />

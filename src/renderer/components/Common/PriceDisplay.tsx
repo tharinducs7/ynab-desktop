@@ -11,7 +11,9 @@ interface PriceDisplayProps {
 }
 
 const formatPriceParts = (value: number, decimalPlaces = 2): string => {
-  return value.toFixed(decimalPlaces).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return Number(value)
+    ?.toFixed(decimalPlaces)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 const PriceDisplay: React.FC<PriceDisplayProps> = ({
