@@ -47,11 +47,6 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
     }
   }, [drawerMode, drawerData, form]);
 
-  // const handleFinish = (vals: ITEM_TYPE) => {
-  //   console.log(vals, 'vals');
-  //   form.resetFields();
-  // };
-
   const title = 'Items';
   const subtitle =
     drawerMode === 'view_mode'
@@ -71,7 +66,6 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
       const finalValues = {
         ...values,
         images,
-        is_active: values.is_active ? 1 : 0,
       };
 
       setLoadingDrawer(true);
@@ -94,7 +88,6 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
         }
       }
 
-      // form.resetFields();
       setLoadingDrawer(false);
     } catch (err: any) {
       setLoadingDrawer(false);
@@ -109,12 +102,21 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
     }
   };
 
-  const imageList = (drawerData?.images || []).map((img: any, idx: number) => ({
-    uid: `-${idx}`, // unique and stable
-    name: `image-${idx}`,
-    status: 'done',
-    url: `${BASE_URL_ASSETS}${img.image_path}`,
-  }));
+  const imageList = (drawerData?.images || []).map((img: any, idx: number) => {
+    const fileName = img.image_path.split('/').pop();
+    const encodedFileName = encodeURIComponent(fileName);
+    const basePath = img.image_path.replace(fileName, '');
+
+    const fullUrl = `${BASE_URL_ASSETS}${basePath}${encodedFileName}`;
+
+    return {
+      uid: `-${idx}`,
+      name: fileName,
+      status: 'done',
+      url: fullUrl,
+      thumbUrl: fullUrl, // ✅ same as url, no %2F
+    };
+  });
 
   console.log(drawerData, 'drawerData', imageList);
 
@@ -140,6 +142,7 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
             expiry_date: drawerData?.expiry_date
               ? dayjs(drawerData?.expiry_date)
               : null,
+            images: imageList,
           }}
         >
           {/* 1. Basic Information */}
@@ -255,31 +258,34 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
             Additional Information
           </Divider>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col span={8}>
               <WarrantyField name="warranty" label="Warranty Period" />
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <DatePickerField
                 name="expiry_date"
                 label="Expiry Date"
                 readOnly={readOnly}
               />
             </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
+            <Col span={8}>
               <SwitchField
                 name="is_active"
                 label="Active Status"
                 readOnly={drawerMode === 'view_mode'}
               />
             </Col>
-            <Col span={12}>
+          </Row>
+          <Divider orientation="left" orientationMargin="0" dashed>
+            Images
+          </Divider>
+          <Row gutter={16}>
+            <Col span={24}>
               <ImageUploaderField
                 name="images"
-                label="Upload Images"
-                required={drawerMode !== 'view_mode'}
-                readOnly={drawerMode === 'view_mode'}
+                label="Images"
+                imageList={imageList}
+                readOnly={readOnly}
               />
             </Col>
           </Row>

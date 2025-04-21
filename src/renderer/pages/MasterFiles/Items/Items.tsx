@@ -8,23 +8,12 @@ import QuantityWithUnit from '../../../components/Common/QuantityWithUnit';
 import PriceDisplay from '../../../components/Common/PriceDisplay';
 import ItemsDrawer from './ItemsDrawer';
 import { ITEM_TYPE } from '../../../types/item';
+import StatusIcon from '../../../components/Common/StatusIcon';
 
 const Items: React.FC = () => {
   const URL: string = '/items';
 
   const userColumns: ColumnsType<ITEM_TYPE> = [
-    {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id',
-      width: 60,
-      // 3) Sort numerically by casting to Number
-      sorter: (a, b) => Number(a.id) - Number(b.id),
-      sortDirections: ['ascend', 'descend'],
-      // 4) Render as a number
-      render: (val: string) => Number(val),
-    },
-
     {
       title: 'Item Code',
       dataIndex: 'item_code',
@@ -60,10 +49,16 @@ const Items: React.FC = () => {
         warranty || <Tag color="magenta">N/A</Tag>,
     },
     {
-      title: 'Qty',
+      title: (
+        <small style={{ textAlign: 'right', fontSize: '0.70em' }}>
+          Quantity
+        </small>
+      ),
       key: 'quantity',
       dataIndex: 'quantity',
-      width: 80,
+      width: 130,
+      align: 'right',
+      className: 'text-right',
       render: (_: any, record: ITEM_TYPE) => (
         <QuantityWithUnit
           value={record.quantity}
@@ -81,25 +76,25 @@ const Items: React.FC = () => {
       ),
       dataIndex: 'damage_quantity',
       key: 'damage_quantity',
-      width: 100,
+      width: 130,
       align: 'right',
       sorter: (a, b) => a.damage_quantity - b.damage_quantity,
-      render: (qty: number) => {
-        let color = 'green';
-        if (qty > 10) color = 'red';
-        else if (qty > 0) color = 'gold';
-
-        const formattedQty = qty.toLocaleString('en-US');
-
-        return <Tag color={color}>{formattedQty}</Tag>;
-      },
+      render: (_: any, record: ITEM_TYPE) => (
+        <QuantityWithUnit
+          value={record.damage_quantity}
+          actual={record.quantity}
+          unit={record.unit_of_measure_symbol}
+          fullName={record.unit_of_measure_full_name}
+          damaged
+        />
+      ),
     },
     {
       title: <div style={{ textAlign: 'right' }}>Cost Price</div>,
       key: 'batch_cost_price',
       dataIndex: 'batch_cost_price',
       className: 'text-right',
-      width: 200,
+      width: 180,
       render: (_: any, record: ITEM_TYPE) => (
         <PriceDisplay value={record.batch_cost_price} />
       ),
@@ -109,7 +104,7 @@ const Items: React.FC = () => {
       key: 'discount_amount',
       dataIndex: 'discount_amount',
       className: 'text-right',
-      width: 200,
+      width: 180,
       render: (_: any, record: ITEM_TYPE) => (
         <PriceDisplay value={record.discount_amount} />
       ),
@@ -119,10 +114,19 @@ const Items: React.FC = () => {
       key: 'batch_selling_price',
       dataIndex: 'batch_selling_price',
       className: 'text-right',
-      width: 200,
+      width: 180,
       render: (_: any, record: ITEM_TYPE) => (
         <PriceDisplay value={record.batch_selling_price} />
       ),
+    },
+    {
+      title: (
+        <small style={{ textAlign: 'right', fontSize: '0.60em' }}>Status</small>
+      ),
+      dataIndex: 'is_active',
+      key: 'is_active',
+      align: 'center',
+      render: (status: number) => <StatusIcon status={status} />,
     },
     {
       title: 'Actions',

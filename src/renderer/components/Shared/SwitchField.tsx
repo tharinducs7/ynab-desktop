@@ -20,12 +20,17 @@ const SwitchField: React.FC<Props> = ({
   return (
     <Form.Item
       name={name}
-      label={label}
+      label={<span style={{ whiteSpace: 'normal' }}>{label}</span>}
       required={required}
       rules={rules}
       valuePropName="checked"
-      getValueFromEvent={(checked: boolean) => checked}
-      normalize={(value: any) => value === 1 || value === true}
+      getValueFromEvent={(checked: boolean) => (checked ? 1 : 0)}
+      hasFeedback
+      labelCol={{ flex: '160px' }} // Give label a fixed width that can wrap
+      wrapperCol={{ flex: 1 }} // Remaining space for input
+      labelAlign="left"
+      colon={false}
+      style={{ marginBottom: 16 }}
     >
       <Switch disabled={readOnly} />
     </Form.Item>

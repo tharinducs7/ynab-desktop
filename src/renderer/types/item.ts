@@ -14,5 +14,6 @@ export interface ITEM_TYPE {
   expiry_date: any;
   images: any;
   is_active: any;
+  status?: any;
   // ...other fields if needed
 }

@@ -1,7 +1,8 @@
 /* eslint-disable react/require-default-props */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, Form, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, CloseCircleFilled } from '@ant-design/icons';
+import type { RcFile, UploadFile } from 'antd/es/upload';
 
 interface Props {
   name: string;
@@ -10,6 +11,7 @@ interface Props {
   required?: boolean;
   rules?: any[];
   maxCount?: number;
+  imageList?: UploadFile[]; // passed as initial image(s)
 }
 
 const ImageUploaderField: React.FC<Props> = ({
@@ -18,8 +20,23 @@ const ImageUploaderField: React.FC<Props> = ({
   readOnly = false,
   required,
   rules,
-  maxCount = 5,
+  maxCount = 1,
+  imageList = [],
 }) => {
+  const [existingImage, setExistingImage] = useState<UploadFile | null>(null);
+  const [newImage, setNewImage] = useState<UploadFile | null>(null);
+
+  useEffect(() => {
+    if (imageList.length > 0 && imageList[0].url) {
+      setExistingImage(imageList[0]);
+    }
+  }, [imageList]);
+
+  const normFile = (e: any) => {
+    const fileList = Array.isArray(e) ? e : e?.fileList || [];
+    return fileList;
+  };
+
   const handleBeforeUpload = (file: File) => {
     const isAllowedType = [
       'image/jpeg',
@@ -27,19 +44,29 @@ const ImageUploaderField: React.FC<Props> = ({
       'image/jpg',
       'image/gif',
     ].includes(file.type);
-
     if (!isAllowedType) {
       message.error('Only JPEG, PNG, JPG, and GIF files are allowed.');
     }
-
-    // prevent upload, handled externally
-    return isAllowedType ? false : Upload.LIST_IGNORE;
+    if (isAllowedType) {
+      const previewUrl = URL.createObjectURL(file);
+      setNewImage({
+        uid: `${file.name}-${Date.now()}`,
+        name: file.name,
+        status: 'done',
+        url: previewUrl,
+        originFileObj: file as RcFile,
+      });
+      setExistingImage(null); // remove old image
+    }
+    return false; // prevent upload
   };
 
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) return e;
-    return e?.fileList;
+  const handleRemove = () => {
+    setExistingImage(null);
+    setNewImage(null);
   };
+
+  const imageToShow = newImage || existingImage;
 
   return (
     <Form.Item
@@ -49,21 +76,57 @@ const ImageUploaderField: React.FC<Props> = ({
       getValueFromEvent={normFile}
       rules={rules}
       required={required}
+      hasFeedback
+      labelCol={{ flex: '160px' }} // Give label a fixed width that can wrap
+      wrapperCol={{ flex: 1 }} // Remaining space for input
+      labelAlign="left"
+      colon={false}
+      style={{ marginBottom: 16 }}
     >
-      <Upload
-        listType="picture-card"
-        multiple
-        maxCount={maxCount}
-        beforeUpload={handleBeforeUpload}
-        disabled={readOnly}
-      >
-        {!readOnly && (
-          <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </div>
-        )}
-      </Upload>
+      {imageToShow ? (
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <img
+            src={imageToShow.url}
+            alt={imageToShow.name}
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 6,
+              objectFit: 'cover',
+            }}
+          />
+          {!readOnly && (
+            <CloseCircleFilled
+              onClick={handleRemove}
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                fontSize: 18,
+                color: '#f5222d',
+                background: '#fff',
+                borderRadius: '50%',
+                cursor: 'pointer',
+              }}
+            />
+          )}
+        </div>
+      ) : (
+        !readOnly && (
+          <Upload
+            listType="picture-card"
+            multiple={false}
+            maxCount={maxCount}
+            beforeUpload={handleBeforeUpload}
+            showUploadList={false}
+          >
+            <div>
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>Upload</div>
+            </div>
+          </Upload>
+        )
+      )}
     </Form.Item>
   );
 };
