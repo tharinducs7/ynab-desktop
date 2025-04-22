@@ -13,6 +13,7 @@ import Vehicles from '../pages/MasterFiles/Vehicles/Vehicles';
 import Items from '../pages/MasterFiles/Items/Items';
 import Customers from '../pages/MasterFiles/Customers/Customers';
 import Suppliers from '../pages/MasterFiles/Suppliers/Suppliers';
+import Categories from '../pages/MasterFiles/Categories/Categories';
 
 const AppRoutes: React.FC = () => {
   const { authData } = useAuth();
@@ -42,6 +43,8 @@ const AppRoutes: React.FC = () => {
         <Route path="master_file/customers" element={<Customers />} />
         <Route path="master_file/suppliers" element={<Suppliers />} />
         <Route path="vehicles-management/vehicles" element={<Vehicles />} />
+        <Route path="master_file/categories" element={<Categories />} />
+
         {/* any other unmatched under "/" */}
         <Route path="*" element={<NotFound />} />
       </Route>
