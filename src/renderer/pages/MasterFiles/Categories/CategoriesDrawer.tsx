@@ -14,8 +14,14 @@ import { CATEGORY_TYPE } from '../../../types/categories';
 const CategoriesDrawer: React.FC = ({ ...rest }) => {
   const [form] = Form.useForm<CATEGORY_TYPE>();
   const [messageApi, contextHolder] = message.useMessage();
-  const { drawerVisible, drawerMode, drawerData, setLoadingDrawer } =
-    useAppContext();
+  const {
+    drawerVisible,
+    drawerMode,
+    drawerData,
+    setLoadingDrawer,
+    reloadTable,
+    closeDrawer,
+  } = useAppContext();
   const readOnly = drawerMode === 'view_mode';
 
   React.useEffect(() => {
@@ -38,12 +44,16 @@ const CategoriesDrawer: React.FC = ({ ...rest }) => {
 
       if (drawerMode === 'create_mode') {
         await createCategory(values);
+        reloadTable?.();
         message.success('Category created successfully!', 2);
+        closeDrawer();
       } else if (drawerMode === 'edit_mode') {
         const id = drawerData?.id;
         if (id) {
           await updateCategory(id, values);
+          reloadTable?.();
           message.success('Category updated successfully!', 2);
+          closeDrawer();
         }
       }
 

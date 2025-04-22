@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import { Divider, Form, Row, Col, message } from 'antd';
@@ -41,6 +40,9 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
         expiry_date: drawerData?.expiry_date
           ? dayjs(drawerData.expiry_date)
           : null,
+        date_added: drawerData?.date_added
+          ? dayjs(drawerData.date_added)
+          : null, // Convert date_added to dayjs object
       });
     } else {
       form.resetFields();
@@ -65,6 +67,12 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
 
       const finalValues = {
         ...values,
+        date_added: values.date_added
+          ? dayjs(values.date_added).format('YYYY-MM-DD')
+          : null,
+        expiry_date: values.expiry_date
+          ? dayjs(values.expiry_date).format('YYYY-MM-DD')
+          : null,
         images,
       };
 
@@ -142,6 +150,9 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
             expiry_date: drawerData?.expiry_date
               ? dayjs(drawerData?.expiry_date)
               : null,
+            date_added: drawerData?.date_added
+              ? dayjs(drawerData?.date_added)
+              : null, // Initialize date_added
             images: imageList,
           }}
         >
@@ -265,6 +276,13 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
               <DatePickerField
                 name="expiry_date"
                 label="Expiry Date"
+                readOnly={readOnly}
+              />
+            </Col>
+            <Col span={8}>
+              <DatePickerField
+                name="date_added"
+                label="Added Date"
                 readOnly={readOnly}
               />
             </Col>

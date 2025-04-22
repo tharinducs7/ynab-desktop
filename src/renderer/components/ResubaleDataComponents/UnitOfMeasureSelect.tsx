@@ -39,9 +39,16 @@ const UnitOfMeasureSelect: React.FC<Props> = ({
     staleTime: 30 * 60 * 1000, // 30 min cache
   } as UseQueryOptions<Unit[], Error>);
 
+  const unitData = useMemo(() => {
+    return data.map((unit) => ({
+      ...unit,
+      searchText: `${unit.label} ${unit.symbol}`.toLowerCase(),
+    }));
+  }, [data]);
+
   const options = useMemo(
     () =>
-      data.map((u) => ({
+      unitData.map((u) => ({
         value: u.value,
         label: (
           <>
@@ -58,8 +65,12 @@ const UnitOfMeasureSelect: React.FC<Props> = ({
             </span>
           </>
         ),
+        // Store the original data for search
+        originalLabel: u.label,
+        originalSymbol: u.symbol,
+        searchText: u.searchText,
       })),
-    [data],
+    [unitData],
   );
 
   const selectedOption = options.find((opt) => opt.value === value);
@@ -78,12 +89,11 @@ const UnitOfMeasureSelect: React.FC<Props> = ({
       value={selectedOption?.value}
       disabled={disabled || readOnly}
       style={{ width: '100%' }}
-      optionFilterProp="label"
-      filterOption={(input, option) =>
-        typeof option?.label === 'string' &&
-        typeof option?.label === 'string' &&
-        (option.label as string).toLowerCase().includes(input.toLowerCase())
-      }
+      optionFilterProp="searchText"
+      filterOption={(input, option) => {
+        // Use the searchText for filtering
+        return option?.searchText?.includes(input.toLowerCase()) || false;
+      }}
       options={options}
     />
   );

@@ -14,6 +14,7 @@ import Items from '../pages/MasterFiles/Items/Items';
 import Customers from '../pages/MasterFiles/Customers/Customers';
 import Suppliers from '../pages/MasterFiles/Suppliers/Suppliers';
 import Categories from '../pages/MasterFiles/Categories/Categories';
+import Services from '../pages/MasterFiles/Services/Services';
 
 const AppRoutes: React.FC = () => {
   const { authData } = useAuth();
@@ -44,7 +45,7 @@ const AppRoutes: React.FC = () => {
         <Route path="master_file/suppliers" element={<Suppliers />} />
         <Route path="vehicles-management/vehicles" element={<Vehicles />} />
         <Route path="master_file/categories" element={<Categories />} />
-
+        <Route path="master_file/services" element={<Services />} />
         {/* any other unmatched under "/" */}
         <Route path="*" element={<NotFound />} />
       </Route>

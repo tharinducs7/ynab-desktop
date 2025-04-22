@@ -12,6 +12,7 @@ export interface ITEM_TYPE {
   discount_amount: number;
   warranty: string;
   expiry_date: any;
+  date_added: any;
   images: any;
   is_active: any;
   status?: any;
