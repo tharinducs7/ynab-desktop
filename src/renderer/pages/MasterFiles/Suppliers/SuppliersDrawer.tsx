@@ -10,14 +10,15 @@ import {
   SwitchField,
   ContactNumberField,
 } from '../../../components/Shared';
-import { create, update } from '../../../api/customers';
+import { create, update } from '../../../api/suppliers';
 import AppDrawer from '../../../components/AppDrawer/AppDrawer';
-import { CUSTOMER_TYPE } from '../../../types/customer';
+import { SUPPLIER_TYPE } from '../../../types/supplier';
+import RegistrationNoField from '../../../components/Shared/RegistrationNoField';
 // import FormFieldWrapper from '../../../components/Shared/FormFieldWrapper';
 // import { BASE_URL_ASSETS } from '../../../utils/httpClient';
 
-const CustomerDrawer: React.FC = ({ ...rest }) => {
-  const [form] = Form.useForm<CUSTOMER_TYPE>();
+const SuppliersDrawer: React.FC = ({ ...rest }) => {
+  const [form] = Form.useForm<SUPPLIER_TYPE>();
   const {
     drawerVisible,
     drawerMode,
@@ -38,7 +39,7 @@ const CustomerDrawer: React.FC = ({ ...rest }) => {
     }
   }, [drawerMode, drawerData, form]);
 
-  const title = 'Customer';
+  const title = 'Supplier';
   const subtitle =
     drawerMode === 'view_mode'
       ? 'Review the details below.'
@@ -58,13 +59,13 @@ const CustomerDrawer: React.FC = ({ ...rest }) => {
 
       if (drawerMode === 'create_mode') {
         await create(values);
-        message.success('Customer created successfully!', 2);
+        message.success('Supplier created successfully!', 2);
         reloadTable?.();
       } else if (drawerMode === 'edit_mode') {
         const id = drawerData?.id;
         if (id) {
           await update(id, values);
-          message.success('Customer updated successfully!', 2);
+          message.success('Supplier updated successfully!', 2);
           reloadTable?.();
         }
       }
@@ -97,7 +98,7 @@ const CustomerDrawer: React.FC = ({ ...rest }) => {
         width={1800}
         {...rest}
       >
-        <Form<CUSTOMER_TYPE>
+        <Form<SUPPLIER_TYPE>
           form={form}
           layout="horizontal"
           initialValues={{
@@ -146,21 +147,22 @@ const CustomerDrawer: React.FC = ({ ...rest }) => {
           <Row gutter={16}>
             <Col span={12}>
               <NumberInputField
-                name="credit_balance"
-                label="Credit Balance"
+                name="debit_balance"
+                label="Debit Balance"
                 readOnly={readOnly}
               />
             </Col>
             <Col span={12}>
-              <NumberInputField
-                name="credit_limit"
-                label="Credit Limit"
-                readOnly={readOnly}
+              <RegistrationNoField
+                name="registration_no"
+                label="Registration Number"
+                required
+                placeholder="e.g., PV 123456"
               />
             </Col>
           </Row>
           <TextAreaField
-            name="notes"
+            name="remarks"
             label="Notes"
             placeholder="Enter notes"
             readOnly={readOnly}
@@ -168,27 +170,6 @@ const CustomerDrawer: React.FC = ({ ...rest }) => {
           />
 
           {/* 2. Account Status */}
-          <Divider orientation="left" orientationMargin="0" dashed>
-            Account Status
-          </Divider>
-          <Row gutter={16}>
-            <Col span={12}>
-              <NumberInputField
-                name="pending_cheque_balance"
-                label="Pending Cheque Balance"
-                readOnly={readOnly}
-                labelCol="200px"
-              />
-            </Col>
-            <Col span={12}>
-              <NumberInputField
-                name="return_cheque_balance"
-                label="Return Cheque Balance"
-                readOnly={readOnly}
-                labelCol="200px"
-              />
-            </Col>
-          </Row>
           <Divider orientation="left" orientationMargin="0" dashed>
             Profile Status
           </Divider>
@@ -207,4 +188,4 @@ const CustomerDrawer: React.FC = ({ ...rest }) => {
   );
 };
 
-export default CustomerDrawer;
+export default SuppliersDrawer;
