@@ -270,7 +270,11 @@ const ItemsDrawer: React.FC = ({ ...rest }) => {
           </Divider>
           <Row gutter={16}>
             <Col span={8}>
-              <WarrantyField name="warranty" label="Warranty Period" />
+              <WarrantyField
+                name="warranty"
+                label="Warranty Period"
+                required={false}
+              />
             </Col>
             <Col span={8}>
               <DatePickerField

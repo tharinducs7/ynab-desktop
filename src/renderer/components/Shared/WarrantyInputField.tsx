@@ -31,7 +31,7 @@ const WarrantyField: React.FC<Props> = ({
   };
 
   const validateFormat = (_: any, value: string) => {
-    if (!value) return Promise.resolve();
+    if (!value || value.trim() === '') return Promise.resolve();
     const isValid =
       /^\d+\s(day|days|week|weeks|month|months|year|years)$/i.test(
         value.trim(),
@@ -52,9 +52,7 @@ const WarrantyField: React.FC<Props> = ({
     <FormFieldWrapper
       {...restProps}
       rules={[
-        ...(required
-          ? [{ required: true, message: 'This field is required' }]
-          : []),
+        ...(required ? [{ required, message: 'This field is required' }] : []),
         { validator: validateFormat },
         ...rules,
       ]}
